@@ -1,11 +1,11 @@
 Package: maniwarp
 Type: Package
-Title: What the package does (short line)
+Title: It aligns two sequentially ordered high-dimensional data sets by combining traditional manifold alignment and dynamic time warping algorithms.
 Version: 1.0
 Date: 2019-11-10
-Author: Who wrote it
-Maintainer: Who to complain to <yourfault@somewhere.net>
-Description: More about what it does (maybe more than one line)
+Author: Jianing Dong
+Maintainer: Who to complain to <jianing@stat.tamu.edu>
+Description: Knowledge transfer is computationally challenging, due in part to the curse of dimensionality. Recent work on manifold learning has shown that data collected in real-world settings often have high-dimensional representations butlie on low-dimensional manifolds. It is critical to align these data sets and extract this common structure. The idea and theoretical formulation is from https://people.cs.umass.edu/~ccarey/pubs/ManifoldWarping.pdf.
 License: What license is it under?
 Imports: Rcpp (>= 1.0.2)
 LinkingTo: Rcpp, RcppArmadillo
