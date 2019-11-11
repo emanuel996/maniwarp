@@ -6,6 +6,6 @@ Date: 2019-11-10
 Author: Jianing Dong
 Maintainer: Who to complain to <jianing@stat.tamu.edu>
 Description: Knowledge transfer is computationally challenging, due in part to the curse of dimensionality. Recent work on manifold learning has shown that data collected in real-world settings often have high-dimensional representations butlie on low-dimensional manifolds. It is critical to align these data sets and extract this common structure. The idea and theoretical formulation is from https://people.cs.umass.edu/~ccarey/pubs/ManifoldWarping.pdf.
-License: What license is it under?
+License: GPL-2
 Imports: Rcpp (>= 1.0.2)
 LinkingTo: Rcpp, RcppArmadillo
