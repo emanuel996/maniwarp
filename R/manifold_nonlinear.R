@@ -1,4 +1,4 @@
-# manifold alignment for linear case
+# manifold alignment for non-linear case
 resource("sparse.R")
 resource("laplacian.R")
 
@@ -21,14 +21,11 @@ manifold_linear <- function(X1, X2, W1, W2, W12, mu, max_dim, epsilon){
   W = sparse(W1, mu * W12, mu * W12, W2)
   L = laplacian(W)
   # Create weight matrix
-  Z = sparse(X1, cbind(P1, M2), cbind(P2, M1), X2)
-  svd_X = svd(tcrossprod(X))
-  Fplus = pinv(svd_X$u %*% svd_X$v)
-  TT = Fplus %*% Z %*% L %*% t(Z) %*% Fplus
   # prepare for decomposition
   vecs = egis( (TT + t(TT))/2)$vec
   vals = egis( (TT + t(TT))/2)$val
-  vecs = t(Fplus) %*% vecs
+  idx = sort(diag(vals))
+  vecs = vecs[, idx]
   for (i in 1:nrow(vecs)){
     vecs[, i] = vecs[, i]/norm(vect[, i], 2)
   }
@@ -45,4 +42,4 @@ manifold_linear <- function(X1, X2, W1, W2, W12, mu, max_dim, epsilon){
   map2 = vecs[P1+1:P1+P2, start:start+m-1]
   # Compute mappings
   return(list(map1, map2))
-}
+  }
