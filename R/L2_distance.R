@@ -10,4 +10,10 @@ L2_distance <- function(a, b, df = 0){
   D = matrix(aa, n, n) + matrix(bb, n, n, byrow = TRUE) - 2 * ab
   D = sqrt(D)
   return(D)
+  # example
+  # a = b = [1,2,3]
+  # D = [0 1 4
+  #      1 0 1    
+  #      4 1 0]
+  
 }
