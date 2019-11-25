@@ -1,4 +1,4 @@
-laplacian_eigen <- function((X, no_dims = 2, k = 12, sigma = 1){
+laplacian_eigen <- function(X, no_dims = 2, k = 12, sigma = 1){
   # LAPLACIAN_EIGEN Performs non-linear dimensionality reduction using Laplacian Eigenmaps
   #
   # [mappedX, mapping] = laplacian_eigen(X, no_dims, k, sigma, eig_impl)
