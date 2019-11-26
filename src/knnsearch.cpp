@@ -1,7 +1,8 @@
-#include <Rcpp.h>
-#include <mex.h>
-#include <stdint.h>
-#include <algorithm>
+#include<Rcpp.h>
+#include<mex.h>
+#include<stdint.h>
+#include<algorithm>
+#include<RcppArmadillo.h>
 using namespace Rcpp;
 
 
