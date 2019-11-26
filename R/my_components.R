@@ -1,4 +1,4 @@
-components <-function(A){
+my_components <-function(A){
   # COMPONENTS Finds connected components in a graph defined by a adjacency matrix
   
   # The function outputs an n-vector of integers 1:k in blocks, meaning that
@@ -17,6 +17,6 @@ components <-function(A){
   g = graph.adjacency(A)
   # we may use plot(g) for visulization
   # plot(g)
-  block_ind = components(g)$membership
+  block_ind = components(g)$csize
   return(block_ind)
 }
