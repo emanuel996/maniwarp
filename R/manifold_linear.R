@@ -1,19 +1,19 @@
 # manifold alignment for linear case
 
-manifold_linear <- function(X1, X2, W1, W2, W12, mu, max_dim, epsilon){
+manifold_linear <- function(X1, X2, W1, W2, W12, mu = 1, max_dim = 200, epsilon = 1e-8){
   library(Rcpp)
   source('R/aliDif.R')
-  source('R/components.R')
+  source('R/my_components.R')
   source('R/createKnnGraph.R')
   source('R/graph_laplacian.R')
   source('R/L2_distance.R')
   source('R/laplacian_eigen.R')
   source('R/rowBdSlow.R')
-  sourceCpp('src/rowBd.cpp')
-  sourceCpp('src/knnsearch.cpp')
+  #sourceCpp('src/rowBd.cpp')
+  #sourceCpp('src/knnsearch.cpp')
   # Feature-level Manifold Projections. Two domains.
-  # X1: P1*M1 matrix, M1 examples in a P1 dimensional space.
-  # X2: P2*M2 matrix
+  # X1: M1*P1 matrix, M1 examples in a P1 dimensional space.
+  # X2: M2*P2 matrix
   # W1: M1*M1 matrix. weight matrix for each domain.
   # W2: M2*M2 matrix
   # W12: M1*M2 sparse matrix modeling the correspondence of X1 and X2.
@@ -21,23 +21,25 @@ manifold_linear <- function(X1, X2, W1, W2, W12, mu, max_dim, epsilon){
   # max_dim: max dimensionality of the new space. (default: 200)
   # epsilon: precision. (default: 1e-8)
   # get sizes for convenience later
-  P1 = size(X1)[1]
-  P2 = size(X2)[1]
-  M1 = size(X1)[2]
-  M2 = size(X2)[2]
+  M1 = size(X1)[1]
+  M2 = size(X2)[1]
+  P1 = size(X1)[2]
+  P2 = size(X2)[2]
   # Create weight matrix
   mu = mu * (sum(W1) + sum(W2))/(2 * sum(W12))
   W = rbind(cbind(W1, mu * W12), cbind(mu * t(W12), W2))
   L = graph_laplacian(W)
   rm(W1, W2, W12)
   # prepare for decomposition
-  Z = rbind(cbind(X1, matrix(0, P1, M2)), cbind(matrix(0, P2, M1), X2))
-  svd_X = svd(tcrossprod(X))
-  Fplus = pinv(svd_X$u %*% sqrt(svd_X$d))
-  TT = Fplus %*% Z %*% L %*% t(Z) %*% t(Fplus)
-  rm(svd_X, Z, W, L)
+  Z = cbind(rbind(X1, matrix(0, M2, P1)), rbind(matrix(0, M1, P2), X2))
+  svd_Z = svd(crossprod(Z))
+  Fplus = as.numeric( svd_Z$u %*% sqrt(diag(svd_Z$d)) ) 
+  Fplus = matrix(Fplus, ncol = sqrt(length(Fplus)))
+  Fplus = pinv(Fplus)
+  TT = Fplus %*% t(Z) %*% L %*% Z %*% t(Fplus)
+  rm(svd_Z, Z, W, L)
   # Eigen decomposition
-  output = eigen( (TT + t(TT))/2, index.return = TRUE)
+  output = eigen( (TT + t(TT))/2, only.values = FALSE)
   vecs = output$vectors
   vals = output$values
   output2 = sort(vals, index.return = TRUE)
@@ -45,7 +47,7 @@ manifold_linear <- function(X1, X2, W1, W2, W12, mu, max_dim, epsilon){
   rm(TT, Fplus)
   # for (i in 1:ncol(vecs)){
   #   vecs[, i] = vecs[, i]/norm(vect[, i], 2)
-  #}
+  #} we can use the same trick as in class
   vecs = t( t(vecs)/sqrt(colSums(vecs^2)) )
   # filter out eigenvalues that are ~= 0
   for (i in 1:length(vals)){
