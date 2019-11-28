@@ -47,7 +47,7 @@ manifold_linear <- function(X1, X2, W1, W2, W12, mu = 1, max_dim = 200, epsilon 
   rm(TT, Fplus)
   # for (i in 1:ncol(vecs)){
   #   vecs[, i] = vecs[, i]/norm(vect[, i], 2)
-  #} we can use the same trick as in class
+  #} 
   vecs = t( t(vecs)/sqrt(colSums(vecs^2)) )
   # filter out eigenvalues that are ~= 0
   for (i in 1:length(vals)){

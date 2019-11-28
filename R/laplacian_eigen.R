@@ -18,9 +18,6 @@ laplacian_eigen <- function(X, no_dims = 2, k = 10, sigma = 1){
   library('geigen')
   
   # construct neighborhood graph
-  #G = get.knn(X, k)
-  #G = G^2
-  #G = G/pmax(G)
   G = knnsearch_slow(X, k)$matrix
   G = as.matrix(G)
   G = G/max(G)
@@ -49,10 +46,6 @@ laplacian_eigen <- function(X, no_dims = 2, k = 10, sigma = 1){
   G[is.na(G)] = 0
   L[is.infinite(L)] = 0
   G[is.infinite(G)] = 0
-  #L[which.nan(L)] = 0
-  #D(is.nan(D)) = 0
-  #L(is.infinite(L)) = 0
-  #D(is.infinite(D)) = 0
   
   # Construct eigenmaps (solve Ly = lambda*Dy)
   output = geigen(L, D, only.values = FALSE)
@@ -60,14 +53,8 @@ laplacian_eigen <- function(X, no_dims = 2, k = 10, sigma = 1){
   # only need bottom (no_dims + 1) eigenvectors
   lambda = output$values
   vectors = output$vectors
-  # magnitude = colSums(vectors)
-  # vec_index = sort(magnitude, decreasing = TRUE, index.return = TRUE)$ix
-  # lambda = lambda[vec_index[1 : (no_dims + 1)]]
-  # vectors = vectors[, vec_index[1 : (no_dims + 1)]]
-
   # Sort eigenvectors in ascending order
   output2 = sort(lambda, decreasing = FALSE, index.return = TRUE)
-
   # Final embedding
   lambda = lambda[output2$ix[2 : (no_dims + 1)]]
   mappedX = vectors[, output2$ix[2 : (no_dims + 1)]]

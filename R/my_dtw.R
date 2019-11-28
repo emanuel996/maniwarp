@@ -9,6 +9,6 @@ my_dtw <- function(Y1, Y2){
   for (i in 1:length(newY1)){
     W12[newY1[i], newY2[i]] = 1
   }
-  
+  #############
   return(list(path = P, matrix = W12))
 }

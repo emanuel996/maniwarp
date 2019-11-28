@@ -83,13 +83,7 @@ manifold_warping <- function(X1, X2, mode = 'linear', target_dim = NULL, k = 8, 
     }
     P0 = P
   }
-
-  #if (! is_linear){
-  #  V1 = NULL
-  #  V2 = NULL
-  #}
-  # return outputs
-  #return(list(P = P, Y1 = Y1, Y2 = Y2, V1 = V1, V2 = V2))
+  ############
   return(list(P = P, Y1 = Y1, Y2 = Y2))
   
 }

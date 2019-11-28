@@ -18,5 +18,6 @@ my_components <-function(A){
   # we may use plot(g) for visulization
   # plot(g)
   block_ind = components(g)$csize
+  #########
   return(block_ind)
 }

@@ -22,7 +22,5 @@ knnsearch_slow <- function(X, k = 10){
   return(list(index = index, matrix = G))
 }
 
-# library('Rcpp')
-# library('RcppArmadillo')
-# source('src/knnsearch.cpp')
+
 
