@@ -19,23 +19,17 @@ knitr::opts_chunk$set(
 Knowledge transfer is computationally challenging, due in part to the curse of dimensionality. Recent work on manifold learning has shown that data collected in real-world settings often have high-dimensional representations but lie on low-dimensional manifolds.  
 This package is designed to align two sequentially ordered high-dimensional data sets by combining traditional manifold alignment and dynamic time warping algorithms. In each iteration, it firstly aligns two data sets by graph Laplacian and then uses a dynamic time warping method to pair them. Finally, it updates the lost matrix. One can choose linear or non-linear Laplacian method by parameter mode (\'linear\' or \'nonlinear\'). In order to compare with embedding-only algorithm, it also can show embedding by choosing mode \'embed\'. The idea and theoretical formulation are from https://people.cs.umass.edu/~ccarey/pubs/ManifoldWarping.pdf.
 
-
 ## Installation
-
-You can also embed plots, for example:
-
-```{r pressure, echo=FALSE}
-plot(pressure)
+You can use following codes to install the package. 
+```{r, warning=FALSE, message=FALSE, eval=FALSE}
+## You may need following codes to install dependent packages.
+library(devtools)
+install_github("emanuel996/maniwarp")
 ```
-
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
-
 After this, we can use this package.
-
 ```{r setup}
 library(maniwarp)
 ```
-
 ## Handwritten letter example
 Here we use toy example \"handwritten letter \'d\'\" to show our main function \"manifold_warping\". One can use packages such as \"ggplot\" and \"plotly\" for visualization.
 

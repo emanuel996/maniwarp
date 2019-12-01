@@ -15,18 +15,19 @@ This package is designed to align two sequentially ordered high-dimensional data
 
 
 ## Installation
-
-You can also embed plots, for example:
-
-
+You can use following codes to install the package. 
+```{r, warning=FALSE, message=FALSE, eval=FALSE}
+## You may need following codes to install dependent packages.
+library(devtools)
+install_github("emanuel996/maniwarp")
+```
 After this, we can use this package.
-
 ```{r setup}
 library(maniwarp)
 ```
 
 ## Handwritten letter example
-Here we use toy example \"handwritten letter \'d\'\" to show our main function \"manifold_warping\". One can use packages such as \"ggplot\" and \"plotly\" for visualization.
+Here we use toy example \"handwritten letter \'d\'\" to show our main function \"manifold_warping\". 
 
 
 ```{r, warning=FALSE, tidy = T, tidy.opts=list(width.cutoff = 35)}
@@ -34,6 +35,12 @@ X1 = dataset1()$X1
 X2 = dataset1()$X2
 p = dataset1()$p
 ```
+One can use packages such as \"ggplot\" and \"plotly\" for visualization.
+
+\begin{center}
+\includegraphics[width = 120mm]{figures/Rplot_1.jpeg}
+\end{center}
+
 
 It returns a list of 3 matrices. The first matrix is the warping path.
 ```{r}
@@ -47,8 +54,8 @@ The second and third matrices are the projections from the original data to the 
 newX1 = output$Y1
 newX2 = output$Y2
 par(mfrow = c(1,2))
-plot(newX1[, 1], newX1[, 2], type = 'l')
-plot(newX2[, 1], newX2[, 2], type = 'l')
+plot(newX1[, 1], newX1[, 2], type = 'l', height = 4)
+plot(newX2[, 1], newX2[, 2], type = 'l', height = 4)
 ```
 
 ## Sine function example
@@ -59,8 +66,11 @@ X3 = dataset2()$X1
 X4 = dataset2()$X2
 p = dataset2()$p
 ```
+\begin{center}
+\includegraphics[width = 120mm]{figures/Rplot_2.jpeg}
+\end{center}
 
-As shown in the following figure xxx, manifold warping produced similar embeddings for two curves based on their local geometry while embedding linearly collapsed the Swiss roll curve onto the plane. Here we use library \'plotly\' for visualization.
+As shown in the following figures, manifold warping produced similar embeddings for two curves based on their local geometry while embedding linearly collapsed the Swiss roll curve onto the plane. Here we use library \'plotly\' for visualization.
 
 ```{r}
 output2 = manifold_warping(X3, X4, mode = 'embed', target_dim = NULL, k = 8, 
