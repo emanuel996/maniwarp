@@ -1,0 +1,89 @@
+---
+title: "Manifold_Warping"
+output: rmarkdown::pdf_document
+vignette: >
+  %\VignetteIndexEntry{Manifold_Warping}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+
+
+## Description
+Knowledge transfer is computationally challenging, due in part to the curse of dimensionality. Recent work on manifold learning has shown that data collected in real-world settings often have high-dimensional representations but lie on low-dimensional manifolds.  
+This package is designed to align two sequentially ordered high-dimensional data sets by combining traditional manifold alignment and dynamic time warping algorithms. In each iteration, it firstly aligns two data sets by graph Laplacian and then uses a dynamic time warping method to pair them. Finally, it updates the lost matrix. One can choose linear or non-linear Laplacian method by parameter mode (\'linear\' or \'nonlinear\'). In order to compare with embedding-only algorithm, it also can show embedding by choosing mode \'embed\'. The idea and theoretical formulation are from https://people.cs.umass.edu/~ccarey/pubs/ManifoldWarping.pdf.
+
+
+## Installation
+
+You can also embed plots, for example:
+
+
+After this, we can use this package.
+
+```{r setup}
+library(maniwarp)
+```
+
+## Handwritten letter example
+Here we use toy example \"handwritten letter \'d\'\" to show our main function \"manifold_warping\". One can use packages such as \"ggplot\" and \"plotly\" for visualization.
+
+
+```{r, warning=FALSE, tidy = T, tidy.opts=list(width.cutoff = 35)}
+X1 = dataset1()$X1
+X2 = dataset1()$X2
+p = dataset1()$p
+```
+
+It returns a list of 3 matrices. The first matrix is the warping path.
+```{r}
+output = manifold_warping(X1, X2, mode = 'nonlinear', target_dim = 2, k = 8, 
+                           mu = 0.3, thresh = 0.01, max_its = 100)
+t(output$P)
+```
+
+The second and third matrices are the projections from the original data to the low-dimensional representation. Instead of printing the matrices, we can visualize the matrices.
+```{r}
+newX1 = output$Y1
+newX2 = output$Y2
+par(mfrow = c(1,2))
+plot(newX1[, 1], newX1[, 2], type = 'l')
+plot(newX2[, 1], newX2[, 2], type = 'l')
+```
+
+## Sine function example
+Next, We compare the performance of manifold warping by trying to align two $sin(x^2)$ curves: one is on the flat plane, the another is projected onto the Swiss roll as illustrated in the following figure. Some duplicate points are added along the curves to create many-to-one correspondences in the alignment.
+
+```{r}
+X3 = dataset2()$X1
+X4 = dataset2()$X2
+p = dataset2()$p
+```
+
+As shown in the following figure xxx, manifold warping produced similar embeddings for two curves based on their local geometry while embedding linearly collapsed the Swiss roll curve onto the plane. Here we use library \'plotly\' for visualization.
+
+```{r}
+output2 = manifold_warping(X3, X4, mode = 'embed', target_dim = NULL, k = 8, 
+                             mu = 0.3, thresh = 0.01, max_its = 100)
+newX3 = output2$Y1
+newX4 = output2$Y2
+g1 = data.frame(x = newX3[, 1], y = newX3[, 2])
+g2 = data.frame(x = newX4[, 1], y = newX4[, 2])
+par(mfrow = c(1,2))
+plot(g1[, 1], g1[, 2], type = 'l')
+plot(g2[, 1], g2[, 2], type = 'l')
+```
+
+You may find the figures created by \'embedding\' method look more similar. However, the scale is more important. There might be some inessential points ignored by manifold warping algorithm.
+```{r}
+output3 = manifold_warping(X3, X4, mode = 'nonlinear', target_dim = NULL, k = 8, 
+                             mu = 0.3, thresh = 0.01, max_its = 100)
+newX3 = output3$Y1
+newX4 = output3$Y2
+g3 = data.frame(x = newX3[, 1], y = newX3[, 2])
+g4 = data.frame(x = newX4[, 1], y = newX4[, 2])
+par(mfrow = c(1,2))
+plot(g3[, 1], g3[, 2], type = 'l')
+plot(g4[, 1], g4[, 2], type = 'l')
+```
+

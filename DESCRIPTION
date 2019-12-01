@@ -9,3 +9,7 @@ Description: Knowledge transfer is computationally challenging, due in part to t
 License: GPL-2
 Imports: Rcpp (>= 1.0.2)
 LinkingTo: Rcpp, RcppArmadillo
+Suggests: 
+    knitr,
+    rmarkdown
+VignetteBuilder: knitr

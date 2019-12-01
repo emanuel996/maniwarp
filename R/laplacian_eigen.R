@@ -10,13 +10,13 @@ laplacian_eigen <- function(X, no_dims = 2, k = 10, sigma = 1){
   # neighbours in the graph (default = 12).
   # The reduced data is returned in the matrix mappedX.
   #
-  source('R/L2_distance.R')
-  source('R/my_components.R')
-  source('R/knnsearch_slow.R')
-  source('R/createKnnGraph.R')
+  #source('R/L2_distance.R')
+  #source('R/my_components.R')
+  #source('R/knnsearch_slow.R')
+  #source('R/createKnnGraph.R')
   library('FNN')
   library('geigen')
-  
+
   # construct neighborhood graph
   G = knnsearch_slow(X, k)$matrix
   G = as.matrix(G)
@@ -30,14 +30,14 @@ laplacian_eigen <- function(X, no_dims = 2, k = 10, sigma = 1){
   block_no = which.max(count)
   conn_comp = which(blocks == block_no)
   G = G[conn_comp, conn_comp]
-  
+
   # Compute weights (W = G)
   # Compute Gaussian kernel (heat kernel-based weights)
   G[G != 0] = exp(-G[G != 0] / (2 * sigma ^ 2))
-  
+
   # Construct diagonal weight matrix
   D = diag(rowSums(G));
-  
+
   # Compute Laplacian
   L = D - G
   L = matrix(L, ncol = dim(L)[1])
@@ -46,10 +46,10 @@ laplacian_eigen <- function(X, no_dims = 2, k = 10, sigma = 1){
   G[is.na(G)] = 0
   L[is.infinite(L)] = 0
   G[is.infinite(G)] = 0
-  
+
   # Construct eigenmaps (solve Ly = lambda*Dy)
   output = geigen(L, D, only.values = FALSE)
-  
+
   # only need bottom (no_dims + 1) eigenvectors
   lambda = output$values
   vectors = output$vectors

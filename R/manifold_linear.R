@@ -2,13 +2,13 @@
 
 manifold_linear <- function(X1, X2, W1, W2, W12, mu = 1, max_dim = 200, epsilon = 1e-8){
   library(Rcpp)
-  source('R/aliDif.R')
-  source('R/my_components.R')
-  source('R/createKnnGraph.R')
-  source('R/graph_laplacian.R')
-  source('R/L2_distance.R')
-  source('R/laplacian_eigen.R')
-  source('R/rowBdSlow.R')
+  #source('R/aliDif.R')
+  #source('R/my_components.R')
+  #source('R/createKnnGraph.R')
+  #source('R/graph_laplacian.R')
+  #source('R/L2_distance.R')
+  #source('R/laplacian_eigen.R')
+  #source('R/rowBdSlow.R')
   #sourceCpp('src/rowBd.cpp')
   #sourceCpp('src/knnsearch.cpp')
   # Feature-level Manifold Projections. Two domains.
@@ -33,7 +33,7 @@ manifold_linear <- function(X1, X2, W1, W2, W12, mu = 1, max_dim = 200, epsilon 
   # prepare for decomposition
   Z = cbind(rbind(X1, matrix(0, M2, P1)), rbind(matrix(0, M1, P2), X2))
   svd_Z = svd(crossprod(Z))
-  Fplus = as.numeric( svd_Z$u %*% sqrt(diag(svd_Z$d)) ) 
+  Fplus = as.numeric( svd_Z$u %*% sqrt(diag(svd_Z$d)) )
   Fplus = matrix(Fplus, ncol = sqrt(length(Fplus)))
   Fplus = pinv(Fplus)
   TT = Fplus %*% t(Z) %*% L %*% Z %*% t(Fplus)
@@ -47,7 +47,7 @@ manifold_linear <- function(X1, X2, W1, W2, W12, mu = 1, max_dim = 200, epsilon 
   rm(TT, Fplus)
   # for (i in 1:ncol(vecs)){
   #   vecs[, i] = vecs[, i]/norm(vect[, i], 2)
-  #} 
+  #}
   vecs = t( t(vecs)/sqrt(colSums(vecs^2)) )
   # filter out eigenvalues that are ~= 0
   for (i in 1:length(vals)){

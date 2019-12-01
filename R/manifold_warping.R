@@ -2,17 +2,17 @@ manifold_warping <- function(X1, X2, mode = 'linear', target_dim = NULL, k = 8, 
   library(Rcpp)
   library(pracma)
   library(dtw)
-  source('R/aliDif.R')
-  source('R/my_components.R')
-  source('R/createKnnGraph.R')
-  source('R/graph_laplacian.R')
-  source('R/L2_distance.R')
-  source('R/laplacian_eigen.R')
-  source('R/knnsearch_slow.R')
-  source('R/rowBdSlow.R')
-  source('R/manifold_linear.R')
-  source('R/manifold_nonlinear.R')
-  source('R/my_dtw.R')
+  #source('R/aliDif.R')
+  #source('R/my_components.R')
+  #source('R/createKnnGraph.R')
+  #source('R/graph_laplacian.R')
+  #source('R/L2_distance.R')
+  #source('R/laplacian_eigen.R')
+  #source('R/knnsearch_slow.R')
+  #source('R/rowBdSlow.R')
+  #source('R/manifold_linear.R')
+  #source('R/manifold_nonlinear.R')
+  #source('R/my_dtw.R')
   #sourceCpp('src/rowBd.cpp')
   #sourceCpp('src/knnsearch.cpp')
   # Manifold alignment + DTW
@@ -25,7 +25,7 @@ manifold_warping <- function(X1, X2, mode = 'linear', target_dim = NULL, k = 8, 
   #   P        -  new alignment path
   #   Y1,Y2    -  new sequences
   #   V1,V2    -  new mappings (only if mode = 'linear')
-  
+
   # parameters
   dim = min(dim(X1)[2], dim(X2)[2])
   epsilon = 1e-8
@@ -35,7 +35,7 @@ manifold_warping <- function(X1, X2, mode = 'linear', target_dim = NULL, k = 8, 
   # initial alignment
   W1 = createKnnGraph(knnsearch_slow(X1, k)$index)
   W2 = createKnnGraph(knnsearch_slow(X2, k)$index)
-  
+
   if (strcmp(mode, 'embed')){
     Y1 = laplacian_eigen(X1, target_dim, k)$vec
     Y2 = laplacian_eigen(X2, target_dim, k)$vec
@@ -45,14 +45,14 @@ manifold_warping <- function(X1, X2, mode = 'linear', target_dim = NULL, k = 8, 
       return(list(Y1 = Y1, Y2 = Y2))
     }
   }
-  
+
   is_linear = strcmp(mode, 'linear')
-  
+
   W12 = matrix(0, dim(X1)[1], dim(X2)[1])
   W12[1,1] = 1                         # Align the 2 first points
   W12[dim(X1)[1], dim(X2)[1]] = 1      # Align the 2 last points
   #[W12,P0] = my_dtw(X1,X2)
-  
+
   # coordinate-descent search
   nIt = 0
   tmp1 = matrix(c(1:dim(X1)[1]), ncol = 1)
@@ -85,5 +85,5 @@ manifold_warping <- function(X1, X2, mode = 'linear', target_dim = NULL, k = 8, 
   }
   ############
   return(list(P = P, Y1 = Y1, Y2 = Y2))
-  
+
 }

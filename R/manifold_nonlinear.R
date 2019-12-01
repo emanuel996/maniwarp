@@ -2,13 +2,13 @@
 
 manifold_nonlinear <- function(X1, X2, W1, W2, W12, mu = 1, max_dim = 20, epsilon = 1e-8){
   library(Rcpp)
-  source('R/aliDif.R')
-  source('R/my_components.R')
-  source('R/createKnnGraph.R')
-  source('R/graph_laplacian.R')
-  source('R/L2_distance.R')
-  source('R/laplacian_eigen.R')
-  source('R/rowBdSlow.R')
+  #source('R/aliDif.R')
+  #source('R/my_components.R')
+  #source('R/createKnnGraph.R')
+  #source('R/graph_laplacian.R')
+  #source('R/L2_distance.R')
+  #source('R/laplacian_eigen.R')
+  #source('R/rowBdSlow.R')
   #sourceCpp('src/rowBd.cpp')
   #sourceCpp('src/knnsearch.cpp')
   # Feature-level Manifold Projections. Two domains.
@@ -47,8 +47,8 @@ manifold_nonlinear <- function(X1, X2, W1, W2, W12, mu = 1, max_dim = 20, epsilo
   # Compute mappings
   start = i
   m = length(index) - start +1
-  # 
-  g1 = vecs[1:M1, index[start:(start+m-1)] ] 
-  g2 = vecs[(M1+1):(M1+M2), index[start:(start+m-1)] ] 
+  #
+  g1 = vecs[1:M1, index[start:(start+m-1)] ]
+  g2 = vecs[(M1+1):(M1+M2), index[start:(start+m-1)] ]
   return(list(map1 = g1, map2 = g2))
 }
